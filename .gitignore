@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### git init
+### git status
+### git add .
+### git remote add origin https://github.com/andre-farias-ti/aluno_online_2023_2.git
+### git push --set-upstream origin master
