@@ -34,4 +34,17 @@ public class AlunoController {
         return service.listaPorNomeOrCurso(dto);
     }
 
+    @GetMapping("/atualiza-email/{email}/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void atualizaEmail(@PathVariable String email, @PathVariable Long id) {
+
+        service.atualizaEmailAluno(email, id);
+    }
+
+    @GetMapping("/listar-aluno-diciplina/{idDiciplina}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Aluno> listarAlunoDiciplina(@PathVariable Long idDiciplina) {
+        return service.listaAlunoDiciplina(idDiciplina);
+    }
+
 }
