@@ -13,12 +13,6 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
     List<Aluno> findByNomeContainsIgnoreCase(String nome);
 
-    List<Aluno> findByNomeOrCursos(String nome, String curso);
-
-    @Modifying
-    @Query("update Aluno a set a.email = ?1 where a.id = ?2")
-    void atualizaEmailAluno(String email, Long id);
-
     @Query(value = "select " +
             "    a.* " +
             "    from " +

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Builder(toBuilder = true)
@@ -23,8 +25,19 @@ public class Aluno implements Serializable {
 
     private String nome;
 
-    private String email;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Email> emails;
 
-    private String cursos;
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "aluno_curso",
+            joinColumns = @JoinColumn(name = "id_aluno"),
+            inverseJoinColumns = @JoinColumn(name = "id_curso"))
+    private Set<Curso> cursos = new HashSet<>();
+
+    public Aluno(Long id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
 
 }
