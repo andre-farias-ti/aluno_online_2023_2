@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -29,7 +30,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/alunos/**").hasRole("USER")
                 .antMatchers("/matricula-aluno/**").hasRole("ADMIN")
-                .antMatchers("/registro-disciplina/**").hasRole("DIRETOR")
                 .antMatchers("/v2/api-docs", "/swagger-resources/**", "/webjars/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -41,24 +41,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("andre").password("1234").roles("ADMIN")
-                .and().withUser("jose").password("1234").roles("USER")
-                .and().withUser("marcelo").password("1234").roles("DIRETOR");
+                .withUser("andre").password(new BCryptPasswordEncoder().encode("1234")).roles("ADMIN")
+                .and().withUser("jose").password(new BCryptPasswordEncoder().encode("1234")).roles("USER")
+                .and().withUser("marcelo").password(new BCryptPasswordEncoder().encode("1234")).roles("DIRETOR");
 
 
                 //.withUser("jose").password(new BCryptPasswordEncoder().encode("1234")).roles("USER");
                 //.and().withUser("marcelo").password("1234").roles("DIRETOR");
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-    }
-
-
 //    @Bean
 //    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
+//        return NoOpPasswordEncoder.getInstance();
 //    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 }

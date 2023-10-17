@@ -22,6 +22,7 @@ public class RegistroDisciplinaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<RegistroDisciplina> create(@RequestBody RegistroDisciplina registroDisciplina) {
         RegistroDisciplina entidade = service.create(registroDisciplina);
 
@@ -30,6 +31,7 @@ public class RegistroDisciplinaController {
 
     @PatchMapping("/update-notas/{matriculaId}/{disciplinaId}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public void patchGrades(@RequestBody MatriculaAlunoNotasOnlyDto notasOnlyDto, @PathVariable Long matriculaId,
                             @PathVariable Long disciplinaId) {
         service.updateNotas(notasOnlyDto, matriculaId, disciplinaId);
@@ -37,7 +39,7 @@ public class RegistroDisciplinaController {
 
     @GetMapping("/estudante-notas/{matriculaId}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyRole('DIRETOR')")
+    @PreAuthorize("hasAnyRole('DIRETOR','ADMIN')")
     public HistoricoAlunoDto studentGrades(@PathVariable Long matriculaId) {
         return service.getHistoricoFromAluno(matriculaId);
     }
